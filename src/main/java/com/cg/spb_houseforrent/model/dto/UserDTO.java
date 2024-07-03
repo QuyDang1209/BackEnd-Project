@@ -1,5 +1,7 @@
-package com.cg.spb_houseforrent.model;
+package com.cg.spb_houseforrent.model.dto;
 
+import com.cg.spb_houseforrent.model.ActiveStatus;
+import com.cg.spb_houseforrent.model.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,16 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
-public class Users {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Long id;
     private String name;
     private String address;
@@ -24,11 +23,6 @@ public class Users {
     private String email;
     private String phone;
     private String password;
-    @OneToOne
-    @JoinColumn(name = "roles_id")
-    private Roles role;
-    @OneToOne
-    @JoinColumn(name = "actives_id")
-    private ActiveStatus active;
-
+    private Long role;
+    private Long active;
 }

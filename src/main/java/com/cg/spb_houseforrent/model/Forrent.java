@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "forrents")
-public class Forrents {
+public class Forrent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,9 @@ public class Forrents {
     private String decription;
     @OneToOne
     @JoinColumn(name = "typehouses_id")
-    private TypeHouses type;
+    private TypeHouse type;
     @OneToOne
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User users;
 
 }
