@@ -27,7 +27,17 @@ public class UserController {
         userService.saveUserDTO(userDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/edit/{id}")
+    @GetMapping("/{id}")
+    private ResponseEntity<?> findById(@PathVariable Long id){
+        Optional<User> userOptional = Optional.ofNullable(userService.findById(id).get());
+        if(!userOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(userOptional.get(),HttpStatus.OK);
+        }
+    }
+    @PatchMapping("/edit/{id}")
     private ResponseEntity<?> edit(@PathVariable Long id, @RequestBody UserDTO userDTO){
         Optional<User> userOptional = Optional.ofNullable(userService.findById(id).get());
         if(!userOptional.isPresent()){
