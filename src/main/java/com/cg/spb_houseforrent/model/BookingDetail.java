@@ -14,16 +14,16 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "bookings")
-public class BookingDetails {
+public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "forrents_id")
-    private Forrents forrent;
+    private Forrent forrent;
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User users;
     private LocalDate orderday;
     private LocalDate payday;
     private Double rent;

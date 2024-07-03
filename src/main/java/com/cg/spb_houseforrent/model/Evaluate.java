@@ -18,13 +18,13 @@ public class Evaluate {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User users;
     private String img;
     private Long rate;
     private String comment;
     @ManyToOne
     @JoinColumn(name = "forrent_id")
-    private Forrents forrents;
+    private Forrent forrents;
     @ManyToOne
     @JoinColumn(name = "evaluatestatus")
     private EvaluateStatus evaluateStatus;
