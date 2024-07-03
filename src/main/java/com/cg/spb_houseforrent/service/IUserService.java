@@ -11,5 +11,6 @@ import java.util.List;
 public interface IUserService extends IGenericService<User> {
     User saveUserDTO (UserDTO userDTO);
     void changeRole(List<UserDTO> userDTOS);
+    void changeActive(List<UserDTO> userDTOS);
 
 }

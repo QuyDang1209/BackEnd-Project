@@ -71,4 +71,14 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PatchMapping("/change-active")
+    private ResponseEntity<?> changeActive(@RequestBody List<UserDTO> userDTO){
+        try{
+            userService.changeActive(userDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

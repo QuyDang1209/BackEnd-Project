@@ -85,4 +85,15 @@ public class UserMemberService implements IUserService{
             }
         }
     }
+    @Override
+    public void changeActive(List<UserDTO> userDTOS) {
+        for(UserDTO us : userDTOS){
+            User user = usersRepository.findById(us.getId()).orElse(null);
+            if(user != null){
+                ActiveStatus activeStatus = activeStatusRepository.findById(us.getActive()).orElse(null);
+                user.setActive(activeStatus);
+                usersRepository.save(user);
+            }
+        }
+    }
 }
