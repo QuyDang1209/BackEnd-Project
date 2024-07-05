@@ -5,6 +5,7 @@ import com.cg.spb_houseforrent.config.service.JwtService;
 import com.cg.spb_houseforrent.config.service.UserService;
 import com.cg.spb_houseforrent.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +33,12 @@ public class AuthoController {
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findUserByUsername(user.getEmail());
+        if(currentUser == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(currentUser.getActive().getId() == 2){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is not active");
+        }
         return ResponseEntity.ok(new JwtResponse(currentUser.getId(), jwt, userDetails.getUsername(), userDetails.getUsername(), userDetails.getAuthorities()));
     }
 }
