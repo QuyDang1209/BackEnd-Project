@@ -34,6 +34,11 @@ public class UserMemberService implements IUserService{
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.ofNullable(usersRepository.findUserByEmail(email));
+    }
+
+    @Override
     public User save(User user) {
         return usersRepository.save(user);
     }

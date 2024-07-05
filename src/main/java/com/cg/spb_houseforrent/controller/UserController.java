@@ -2,6 +2,7 @@ package com.cg.spb_houseforrent.controller;
 
 import com.cg.spb_houseforrent.model.User;
 import com.cg.spb_houseforrent.model.dto.UserDTO;
+import com.cg.spb_houseforrent.model.dto.res.UserActiveRes;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
 import com.cg.spb_houseforrent.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +83,16 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/active/{email}")
+    private ResponseEntity<?> checkActiveById(@PathVariable String email){
+        Optional<User> userOptional = Optional.of(userService.findByEmail(email).get());
+        User user = userOptional.get();
+        boolean isActive = user.getActive().getId() == 2;
+        if(isActive){
+            return new ResponseEntity<>(new UserActiveRes(false),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new UserActiveRes(true),HttpStatus.OK);
+        }
 
+    }
 }
