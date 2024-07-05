@@ -7,17 +7,11 @@ import com.cg.spb_houseforrent.model.dto.UserDTO;
 import com.cg.spb_houseforrent.repository.IActiveStatusRepository;
 import com.cg.spb_houseforrent.repository.IRolesRepository;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserMemberService implements IUserService{
@@ -36,6 +30,11 @@ public class UserMemberService implements IUserService{
     @Override
     public Optional<User> findById(Long id) {
         return usersRepository.findById(id);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.ofNullable(usersRepository.findUserByEmail(email));
     }
 
     @Override
@@ -109,4 +108,12 @@ public class UserMemberService implements IUserService{
             }
         }
     }
+    @Override
+    public User updatePassword(Long userId, String newPassword) {
+        User user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
+        user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt(12)));
+        return usersRepository.save(user);
+    }
+
 }
