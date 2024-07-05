@@ -54,22 +54,35 @@ public class UserMemberService implements IUserService{
         User user = null;
         if(userDTO.getId() == null){
             user = new User();
+            user.setName(userDTO.getName());
+            user.setDob(userDTO.getDob());
+            user.setAddress(userDTO.getAddress());
+            user.setEmail(userDTO.getEmail());
+            user.setPassword( BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)) );
+            user.setPhone(userDTO.getPhone());
+            user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
+            Set<Role> roles = new HashSet<>();
+            roles.add(rolesRepository.findById(userDTO.getRole()).get());
+            user.setRole(roles);
+            usersRepository.save(user);
+            return user ;
         }
         else {
             user = usersRepository.findById(userDTO.getId()).get();
+            user.setName(userDTO.getName());
+            user.setDob(userDTO.getDob());
+            user.setAddress(userDTO.getAddress());
+            user.setEmail(userDTO.getEmail());
+            user.setPassword(userDTO.getPassword());
+            user.setPhone(userDTO.getPhone());
+            user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
+            Set<Role> roles = new HashSet<>();
+            roles.add(rolesRepository.findById(userDTO.getRole()).get());
+            user.setRole(roles);
+            usersRepository.save(user);
+            return user ;
         }
-        user.setName(userDTO.getName());
-        user.setDob(userDTO.getDob());
-        user.setAddress(userDTO.getAddress());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword( BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)) );
-        user.setPhone(userDTO.getPhone());
-        user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
-        Set<Role> roles = new HashSet<>();
-        roles.add(rolesRepository.findById(userDTO.getRole()).get());
-        user.setRole(roles);
-        usersRepository.save(user);
-        return user ;
+
     }
 
     @Override
