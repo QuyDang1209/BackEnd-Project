@@ -7,6 +7,8 @@ public interface IGenericService<T> {
 
     Optional<T> findById(Long id);
 
+    Optional<T> findByEmail(String email);
+
     T save(T t);
 
     void remove(Long id);
