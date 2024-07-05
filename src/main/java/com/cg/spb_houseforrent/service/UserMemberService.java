@@ -7,17 +7,11 @@ import com.cg.spb_houseforrent.model.dto.UserDTO;
 import com.cg.spb_houseforrent.repository.IActiveStatusRepository;
 import com.cg.spb_houseforrent.repository.IRolesRepository;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserMemberService implements IUserService{
@@ -59,22 +53,35 @@ public class UserMemberService implements IUserService{
         User user = null;
         if(userDTO.getId() == null){
             user = new User();
+            user.setName(userDTO.getName());
+            user.setDob(userDTO.getDob());
+            user.setAddress(userDTO.getAddress());
+            user.setEmail(userDTO.getEmail());
+            user.setPassword( BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)) );
+            user.setPhone(userDTO.getPhone());
+            user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
+            Set<Role> roles = new HashSet<>();
+            roles.add(rolesRepository.findById(userDTO.getRole()).get());
+            user.setRole(roles);
+            usersRepository.save(user);
+            return user ;
         }
         else {
             user = usersRepository.findById(userDTO.getId()).get();
+            user.setName(userDTO.getName());
+            user.setDob(userDTO.getDob());
+            user.setAddress(userDTO.getAddress());
+            user.setEmail(userDTO.getEmail());
+            user.setPassword(userDTO.getPassword());
+            user.setPhone(userDTO.getPhone());
+            user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
+            Set<Role> roles = new HashSet<>();
+            roles.add(rolesRepository.findById(userDTO.getRole()).get());
+            user.setRole(roles);
+            usersRepository.save(user);
+            return user ;
         }
-        user.setName(userDTO.getName());
-        user.setDob(userDTO.getDob());
-        user.setAddress(userDTO.getAddress());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword( BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)) );
-        user.setPhone(userDTO.getPhone());
-        user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
-        Set<Role> roles = new HashSet<>();
-        roles.add(rolesRepository.findById(userDTO.getRole()).get());
-        user.setRole(roles);
-        usersRepository.save(user);
-        return user ;
+
     }
 
     @Override
@@ -101,4 +108,12 @@ public class UserMemberService implements IUserService{
             }
         }
     }
+    @Override
+    public User updatePassword(Long userId, String newPassword) {
+        User user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
+        user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt(12)));
+        return usersRepository.save(user);
+    }
+
 }

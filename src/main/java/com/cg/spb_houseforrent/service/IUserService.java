@@ -13,4 +13,5 @@ public interface IUserService extends IGenericService<User> {
     void changeRole(List<UserDTO> userDTOS);
     void changeActive(List<UserDTO> userDTOS);
 
+    User updatePassword(Long userId, String newPassword);
 }

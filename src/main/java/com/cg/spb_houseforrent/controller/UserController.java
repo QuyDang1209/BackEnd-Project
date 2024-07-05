@@ -51,15 +51,16 @@ public class UserController {
         }
     }
     @PatchMapping("/change-password/{id}")
-    private ResponseEntity<?> changePassword(@PathVariable Long id,@RequestBody UserDTO userDTO){
-        Optional<User> userOptional = Optional.ofNullable(userService.findById(id).get());
-        if(!userOptional.isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else {
-            userDTO.setId(id);
-            userService.saveUserDTO(userDTO);
-            return new ResponseEntity<>(userOptional.get(),HttpStatus.OK);
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        try {
+            User user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()) {
+                return new ResponseEntity<>("Invalid password", HttpStatus.BAD_REQUEST);
+            }
+            userService.updatePassword(id, userDTO.getPassword());
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
     @PatchMapping("/change-role")
