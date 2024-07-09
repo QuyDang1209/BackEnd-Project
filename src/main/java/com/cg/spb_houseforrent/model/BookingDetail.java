@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "bookings")
-public class BookingDetail {
+public class
+BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
