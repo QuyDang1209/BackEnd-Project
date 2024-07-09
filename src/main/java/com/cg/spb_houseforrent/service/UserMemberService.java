@@ -7,7 +7,6 @@ import com.cg.spb_houseforrent.model.dto.UserDTO;
 import com.cg.spb_houseforrent.repository.IActiveStatusRepository;
 import com.cg.spb_houseforrent.repository.IRolesRepository;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,7 +47,10 @@ public class UserMemberService implements IUserService{
     usersRepository.deleteById(id);
     }
 
-
+    @Override
+    public List<User> getUsersByRoleId(Long roleId) {
+        return usersRepository.findRoleById(roleId);
+    }
 
 
     @Override
