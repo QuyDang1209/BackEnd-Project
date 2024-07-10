@@ -93,6 +93,9 @@ public class UserController {
         }else{
             return new ResponseEntity<>(new UserActiveRes(true),HttpStatus.OK);
         }
-
+    }
+    @GetMapping("/filter")
+    public Iterable<User> getUsersByRole(@RequestParam("roleId") Long roleId) {
+        return userService.getUsersByRoleId(roleId);
     }
 }

@@ -18,9 +18,12 @@ public class Forrent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String namehouse;
     private String address;
     @OneToMany(mappedBy = "forrents")
     private Set<ImgHouse> imgs;
+    private Long bedroom;
+    private Long bathroom;
     private Double rentingprice;
 
     private String decription;

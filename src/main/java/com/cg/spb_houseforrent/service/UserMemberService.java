@@ -7,8 +7,8 @@ import com.cg.spb_houseforrent.model.dto.UserDTO;
 import com.cg.spb_houseforrent.repository.IActiveStatusRepository;
 import com.cg.spb_houseforrent.repository.IRolesRepository;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -47,6 +47,11 @@ public class UserMemberService implements IUserService{
     usersRepository.deleteById(id);
     }
 
+    @Override
+    public List<User> getUsersByRoleId(Long roleId) {
+        return usersRepository.findRoleById(roleId);
+    }
+
 
     @Override
     public User saveUserDTO(UserDTO userDTO) {
@@ -57,7 +62,8 @@ public class UserMemberService implements IUserService{
             user.setDob(userDTO.getDob());
             user.setAddress(userDTO.getAddress());
             user.setEmail(userDTO.getEmail());
-            user.setPassword( BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)) );
+//            user.setPassword( BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(10)) );
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             user.setPhone(userDTO.getPhone());
             user.setActive(activeStatusRepository.findById(userDTO.getActive()).get());
             Set<Role> roles = new HashSet<>();
@@ -108,11 +114,14 @@ public class UserMemberService implements IUserService{
             }
         }
     }
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Override
     public User updatePassword(Long userId, String newPassword) {
         User user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
-        user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt(12)));
+//        user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt(10)));
+        user.setPassword(passwordEncoder.encode(newPassword));
         return usersRepository.save(user);
     }
 

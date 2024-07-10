@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface IUserService extends IGenericService<User> {
+    List<User> getUsersByRoleId(Long id);
+
     User saveUserDTO (UserDTO userDTO);
     void changeRole(List<UserDTO> userDTOS);
     void changeActive(List<UserDTO> userDTOS);
