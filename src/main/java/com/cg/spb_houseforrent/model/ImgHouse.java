@@ -13,22 +13,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "forrents")
-public class Forrent {
+@Table(name = "imghouses")
+public class ImgHouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String address;
-    @OneToMany(mappedBy = "forrents")
-    private Set<ImgHouse> imgs;
-    private Double rentingprice;
-
-    private String decription;
+    private String img;
     @ManyToOne
-    @JoinColumn(name = "typehouses_id")
-    private TypeHouse type;
-    @ManyToOne
-    @JoinColumn(name = "users_id")
-    private User users;
+    @JoinColumn(name = "forrents_id")
+    private Forrent forrents;
 
 }

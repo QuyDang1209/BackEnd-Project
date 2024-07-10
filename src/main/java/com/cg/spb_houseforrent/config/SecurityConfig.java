@@ -70,10 +70,19 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-
+//                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/static/**").permitAll()
                         .requestMatchers("/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET,"/api/player/**").permitAll()
+//                      .requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers(HttpMethod.GET,"/api/user/active/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET,"/api/user").permitAll()
+////                        .requestMatchers(HttpMethod.PATCH,"/api/user/change-active").hasAnyAuthority("admin")
+////                        .requestMatchers(HttpMethod.PATCH,"/api/user/change-password/**").hasAnyRole()
+////                        .requestMatchers(HttpMethod.PATCH,"/api/user/edit/**").hasAnyRole()
+////                        .requestMatchers(HttpMethod.GET,"/api/user/**").hasAnyRole()
+//                        .requestMatchers(HttpMethod.POST,"/api/user/create").permitAll()
+//                        .requestMatchers(HttpMethod.GET,"/api/user").hasAnyAuthority("ROLE_ADMIN")
+//                                .anyRequest().authenticated()
 
                 )
                 .exceptionHandling(customizer -> customizer.accessDeniedHandler(customAccessDeniedHandler()))
