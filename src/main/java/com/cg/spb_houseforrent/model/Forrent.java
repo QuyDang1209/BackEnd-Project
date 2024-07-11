@@ -21,7 +21,7 @@ public class Forrent {
     private String namehouse;
     private String address;
     @OneToMany(mappedBy = "forrents")
-    private Set<ImgHouse> imgs;
+    private Set<ImgHouse> img;
     private Long bedroom;
     private Long bathroom;
     private Double rentingprice;
