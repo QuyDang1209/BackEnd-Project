@@ -1,6 +1,7 @@
 package com.cg.spb_houseforrent.repository;
 
 import com.cg.spb_houseforrent.model.Forrent;
+import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

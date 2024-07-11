@@ -31,7 +31,7 @@ public class ForrentResDTO {
     public ForrentResDTO(Forrent forrent) {
         this.id = forrent.getId();
         this.address = forrent.getAddress();
-        this.imgDTOs = forrent.getImgs().stream().map(imgHouse -> imgHouse.imgHouseDTO()).toList();
+        this.imgDTOs = forrent.getImg().stream().map(imgHouse -> imgHouse.imgHouseDTO()).toList();
         this.description = forrent.getDecription();
         this.rentingprice = forrent.getRentingprice();
         this.type = forrent.getType().getId();

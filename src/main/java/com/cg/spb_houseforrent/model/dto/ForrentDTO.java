@@ -19,21 +19,21 @@ import java.util.Set;
 @NoArgsConstructor
 public class ForrentDTO {
     private Long id;
+    private String namehouse;
     private String address;
     private Set<ImgHouse> img;
-    private String description;
+    private String decription;
     private Double rentingprice;
-    private Long type;
-    private Long users;
-    private String namehouse;
     private Long bedroom;
     private Long bathroom;
+    private Long type;
+    private Long users;
 
     public ForrentDTO(Forrent forrent) {
         this.id = forrent.getId();
         this.address = forrent.getAddress();
-        this.img = forrent.getImgs();
-        this.description = forrent.getDecription();
+        this.img = forrent.getImg();
+        this.decription = forrent.getDecription();
         this.rentingprice = forrent.getRentingprice();
         this.type = forrent.getType().getId();
         this.users = forrent.getUsers().getId();

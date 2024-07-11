@@ -1,6 +1,7 @@
 package com.cg.spb_houseforrent.model;
 
 import com.cg.spb_houseforrent.model.dto.res.ImgHouseDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class ImgHouse {
     private String img;
     @ManyToOne
     @JoinColumn(name = "forrents_id")
+    @JsonIgnore
     private Forrent forrents;
 
 

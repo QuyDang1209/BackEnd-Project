@@ -8,4 +8,5 @@ import java.util.Set;
 public interface IImgHouseService extends IGenericService<ImgHouse>{
     Set<ImgHouse> saveListImg(Set<ImgHouse> imgHouseList);
     List<ImgHouse> findAllById(Long id);
+//    void deleteAllImagesByForrendId(Long id);
 }
