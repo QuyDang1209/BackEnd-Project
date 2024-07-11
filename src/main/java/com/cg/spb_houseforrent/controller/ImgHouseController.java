@@ -26,4 +26,9 @@ public class ImgHouseController {
     private ResponseEntity<?> getAllImgByid(@PathVariable Long id){
         return new ResponseEntity<>(imgHouseService.findAllById(id), HttpStatus.OK);
     }
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<?> deleteAllImagesById(@PathVariable Long id){
+        imgHouseService.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

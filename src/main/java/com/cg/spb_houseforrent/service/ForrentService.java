@@ -45,27 +45,39 @@ public class ForrentService implements IForrentService {
 
     @Override
     public Forrent saveForrentDto(ForrentDTO forrentDTO) {
-        Forrent forrent = null;
+            Forrent forrent = null;
         if(forrentDTO.getId() != null ){
+            forrent = forrentRepository.findById(forrentDTO.getId()).get();
+            forrent.setNamehouse(forrentDTO.getNamehouse());
             forrent.setAddress(forrentDTO.getAddress());
-            forrent.setImgs(forrentDTO.getImg());
+            forrent.setImg(forrentDTO.getImg());
             forrent.setDecription(forrentDTO.getDecription());
             forrent.setRentingprice(forrentDTO.getRentingprice());
+            forrent.setBedroom(forrentDTO.getBedroom());
+            forrent.setBathroom(forrentDTO.getBathroom());
             forrent.setType(typeService.findByid(forrentDTO.getType()));
             forrent.setUsers(usersRepository.findById(forrentDTO.getUsers()).get());
+            for(ImgHouse i: forrent.getImg()){
+                if(i.getId() == null){
+                    i.setForrents(forrent);
+                    imgHouseService.save(i);
+                    break;
+                }
+            }
             forrentRepository.save(forrent);
-
-
         }else {
             forrent = new Forrent();
+            forrent.setNamehouse(forrentDTO.getNamehouse());
             forrent.setAddress(forrentDTO.getAddress());
-            forrent.setImgs(imgHouseService.saveListImg(forrentDTO.getImg()));
+            forrent.setImg(imgHouseService.saveListImg(forrentDTO.getImg()));
             forrent.setDecription(forrentDTO.getDecription());
             forrent.setRentingprice(forrentDTO.getRentingprice());
+            forrent.setBedroom(forrentDTO.getBedroom());
+            forrent.setBathroom(forrentDTO.getBathroom());
             forrent.setType(typeService.findByid(forrentDTO.getType()));
             forrent.setUsers(usersRepository.findById(forrentDTO.getUsers()).get());
             forrentRepository.save(forrent);
-            for(ImgHouse i: forrent.getImgs()){
+            for(ImgHouse i: forrent.getImg()){
                 i.setForrents(forrent);
                 imgHouseService.save(i);
             }

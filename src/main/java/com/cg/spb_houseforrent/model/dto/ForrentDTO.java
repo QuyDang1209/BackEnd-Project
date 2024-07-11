@@ -18,10 +18,13 @@ import java.util.Set;
 @NoArgsConstructor
 public class ForrentDTO {
     private Long id;
+    private String namehouse;
     private String address;
     private Set<ImgHouse> img;
     private String decription;
     private Double rentingprice;
+    private Long bedroom;
+    private Long bathroom;
     private Long type;
     private Long users;
 }
