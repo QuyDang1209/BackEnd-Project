@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,13 +18,19 @@ public class Forrent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String namehouse;
     private String address;
-    private String img;
+    @OneToMany(mappedBy = "forrents")
+    private Set<ImgHouse> imgs;
+    private Long bedroom;
+    private Long bathroom;
+    private Double rentingprice;
+
     private String decription;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "typehouses_id")
     private TypeHouse type;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "users_id")
     private User users;
 
