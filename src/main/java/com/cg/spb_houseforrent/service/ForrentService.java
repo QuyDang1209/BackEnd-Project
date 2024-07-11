@@ -3,8 +3,9 @@ package com.cg.spb_houseforrent.service;
 import com.cg.spb_houseforrent.model.Forrent;
 import com.cg.spb_houseforrent.model.ImgHouse;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
+import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.IForrentRepository;
-import com.cg.spb_houseforrent.repository.ITypeRepository;
+import com.cg.spb_houseforrent.repository.ITypeHouseRepository;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,11 @@ public class ForrentService implements IForrentService {
     @Autowired
     private IForrentRepository forrentRepository;
     @Autowired
-    private ITypeService typeService;
-    @Autowired
     private IUsersRepository usersRepository;
     @Autowired
     private IImgHouseService imgHouseService;
+    @Autowired
+    private ITypeHouseRepository iTypeHouseRepository;
 
     @Override
     public Iterable<Forrent> findAll() {
@@ -55,7 +56,7 @@ public class ForrentService implements IForrentService {
             forrent.setRentingprice(forrentDTO.getRentingprice());
             forrent.setBedroom(forrentDTO.getBedroom());
             forrent.setBathroom(forrentDTO.getBathroom());
-            forrent.setType(typeService.findByid(forrentDTO.getType()));
+            forrent.setType(iTypeHouseRepository.findById(forrentDTO.getType()).get());
             forrent.setUsers(usersRepository.findById(forrentDTO.getUsers()).get());
             for(ImgHouse i: forrent.getImg()){
                 if(i.getId() == null){
@@ -74,8 +75,11 @@ public class ForrentService implements IForrentService {
             forrent.setRentingprice(forrentDTO.getRentingprice());
             forrent.setBedroom(forrentDTO.getBedroom());
             forrent.setBathroom(forrentDTO.getBathroom());
-            forrent.setType(typeService.findByid(forrentDTO.getType()));
+            forrent.setType(iTypeHouseRepository.findById(forrentDTO.getType()).get());
             forrent.setUsers(usersRepository.findById(forrentDTO.getUsers()).get());
+            forrent.setNamehouse(forrentDTO.getNamehouse());
+            forrent.setBedroom(forrentDTO.getBedroom());
+            forrent.setBathroom(forrentDTO.getBathroom());
             forrentRepository.save(forrent);
             for(ImgHouse i: forrent.getImg()){
                 i.setForrents(forrent);
@@ -87,7 +91,13 @@ public class ForrentService implements IForrentService {
     }
 
     @Override
+    public List<ForrentResDTO> findAllForrentDTO() {
+        return forrentRepository.findAllForrentDTO();
+    }
+
+    @Override
     public void remove(Long id) {
 
     }
+
 }

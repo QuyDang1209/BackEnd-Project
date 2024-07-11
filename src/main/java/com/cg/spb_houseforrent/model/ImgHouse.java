@@ -1,5 +1,6 @@
 package com.cg.spb_houseforrent.model;
 
+import com.cg.spb_houseforrent.model.dto.res.ImgHouseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,8 @@ public class ImgHouse {
     @JsonIgnore
     private Forrent forrents;
 
+
+    public ImgHouseDTO imgHouseDTO(){
+        return new ImgHouseDTO(this.id, this.img);
+    }
 }
