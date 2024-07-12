@@ -32,5 +32,8 @@ BookingDetail {
     @ManyToOne
     @JoinColumn(name = "payment")
     private Payment payment;
+    @ManyToOne
+    @JoinColumn(name="statushouse_id")
+    private StatusHouse status;
 
 }
