@@ -66,7 +66,7 @@ public class ForrentHouseController {
         forrentService.saveForrentDto(forrentDTO);
         return new ResponseEntity<>(forrentOptional.get(),HttpStatus.OK);
     }
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     private ResponseEntity<?> checkDayOrderPay(@RequestBody FilterForrent filterForrent){
         Set<ForrentResDTO> forrentDTOs = forrentService.findAllForrentDTO(filterForrent);
         return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);

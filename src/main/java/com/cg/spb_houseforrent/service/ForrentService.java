@@ -118,7 +118,6 @@ public class ForrentService implements IForrentService {
                         checkday = false;
                         break;
                     }
-
                 }
                 if (checkday) {
                     listForrentCheck.add(forrentResDTO);
