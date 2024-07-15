@@ -22,7 +22,7 @@ public class BookingDTO {
     private Long users;
     private LocalDate orderday;
     private LocalDate payday;
-    private Double rent;
+//    private Double rent;
     private Double deposite;
     private Long payment;
     private Long status;
