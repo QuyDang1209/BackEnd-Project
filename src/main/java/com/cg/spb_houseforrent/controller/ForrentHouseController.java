@@ -64,4 +64,13 @@ public class ForrentHouseController {
         forrentService.saveForrentDto(forrentDTO);
         return new ResponseEntity<>(forrentOptional.get(),HttpStatus.OK);
     }
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> findForrentHouseDTOById(@PathVariable Long id){
+        Optional<ForrentResDTO> forrentResDTOOptional = forrentService.findForrentHouseDTOById(id);
+        if (!forrentResDTOOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(forrentResDTOOptional.get(), HttpStatus.OK);
+        }
+    }
 }

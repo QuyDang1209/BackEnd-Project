@@ -99,5 +99,11 @@ public class ForrentService implements IForrentService {
     public void remove(Long id) {
 
     }
+    @Override
+    public Optional<ForrentResDTO> findForrentHouseDTOById(Long id) {
+        return forrentRepository.findForrentHouseDTOById(id);
+    }
+
+
 
 }
