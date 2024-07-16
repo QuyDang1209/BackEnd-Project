@@ -27,7 +27,7 @@ public class ForrentHouseController {
     @Autowired
     private ForrentService forrentService;
 
-//    @GetMapping("")
+    //    @GetMapping("")
 //    public ResponseEntity<Iterable<Forrent>> findAll() {
 //        return new ResponseEntity<>(forrentService.findAll(), HttpStatus.OK);
 //    }
@@ -70,5 +70,11 @@ public class ForrentHouseController {
     private ResponseEntity<?> checkDayOrderPay(@RequestBody FilterForrent filterForrent){
         Set<ForrentResDTO> forrentDTOs = forrentService.findAllForrentDTO(filterForrent);
         return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/filter-house-by-type")
+    public Iterable<Forrent> getHouseByType(@RequestParam("typeId") Long typeId) {
+        return forrentService.getForrentByTypeId(typeId);
     }
 }

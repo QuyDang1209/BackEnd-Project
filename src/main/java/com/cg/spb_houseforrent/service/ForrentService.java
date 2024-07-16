@@ -126,4 +126,11 @@ public class ForrentService implements IForrentService {
         }
         return listForrentCheck;
     }
+
+    @Override
+    public Iterable<Forrent> getForrentByTypeId(Long typeId) {
+        return forrentRepository.findTypeById(typeId);
+    }
 }
+}
+

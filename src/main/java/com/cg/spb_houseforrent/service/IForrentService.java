@@ -14,4 +14,6 @@ public interface IForrentService extends IGenericService<Forrent> {
 
     List<ForrentResDTO> findAllForrentDTO();
     Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent);
+
+    Iterable<Forrent> getForrentByTypeId(Long typeId);
 }

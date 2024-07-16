@@ -4,4 +4,5 @@ import com.cg.spb_houseforrent.model.TypeHouse;
 
 public interface ITypeService {
     TypeHouse findByid(Long id);
+    Iterable<TypeHouse> findAll();
 }
