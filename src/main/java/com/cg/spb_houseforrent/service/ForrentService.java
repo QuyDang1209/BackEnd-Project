@@ -1,17 +1,17 @@
 package com.cg.spb_houseforrent.service;
 
+import com.cg.spb_houseforrent.model.BookingDetail;
 import com.cg.spb_houseforrent.model.Forrent;
 import com.cg.spb_houseforrent.model.ImgHouse;
+import com.cg.spb_houseforrent.model.dto.FilterForrent;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
-import com.cg.spb_houseforrent.repository.IForrentRepository;
-import com.cg.spb_houseforrent.repository.ITypeHouseRepository;
-import com.cg.spb_houseforrent.repository.IUsersRepository;
+import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class ForrentService implements IForrentService {
@@ -23,6 +23,8 @@ public class ForrentService implements IForrentService {
     private IImgHouseService imgHouseService;
     @Autowired
     private ITypeHouseRepository iTypeHouseRepository;
+    @Autowired
+    private IBookingDetailRepository iBookingDetailRepository;
 
     @Override
     public Iterable<Forrent> findAll() {
@@ -46,8 +48,8 @@ public class ForrentService implements IForrentService {
 
     @Override
     public Forrent saveForrentDto(ForrentDTO forrentDTO) {
-            Forrent forrent = null;
-        if(forrentDTO.getId() != null ){
+        Forrent forrent = null;
+        if (forrentDTO.getId() != null) {
             forrent = forrentRepository.findById(forrentDTO.getId()).get();
             forrent.setNamehouse(forrentDTO.getNamehouse());
             forrent.setAddress(forrentDTO.getAddress());
@@ -58,15 +60,15 @@ public class ForrentService implements IForrentService {
             forrent.setBathroom(forrentDTO.getBathroom());
             forrent.setType(iTypeHouseRepository.findById(forrentDTO.getType()).get());
             forrent.setUsers(usersRepository.findById(forrentDTO.getUsers()).get());
-            for(ImgHouse i: forrent.getImg()){
-                if(i.getId() == null){
+            for (ImgHouse i : forrent.getImg()) {
+                if (i.getId() == null) {
                     i.setForrents(forrent);
                     imgHouseService.save(i);
                     break;
                 }
             }
             forrentRepository.save(forrent);
-        }else {
+        } else {
             forrent = new Forrent();
             forrent.setNamehouse(forrentDTO.getNamehouse());
             forrent.setAddress(forrentDTO.getAddress());
@@ -81,7 +83,7 @@ public class ForrentService implements IForrentService {
             forrent.setBedroom(forrentDTO.getBedroom());
             forrent.setBathroom(forrentDTO.getBathroom());
             forrentRepository.save(forrent);
-            for(ImgHouse i: forrent.getImg()){
+            for (ImgHouse i : forrent.getImg()) {
                 i.setForrents(forrent);
                 imgHouseService.save(i);
             }
@@ -106,4 +108,28 @@ public class ForrentService implements IForrentService {
 
 
 
+    @Override
+    public Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent) {
+
+        Set<ForrentResDTO> listForrentCheck = new HashSet<>();
+        List<ForrentResDTO> list1 = findAllForrentDTO();
+        for (ForrentResDTO forrentResDTO : list1) {
+            if (filterForrent.getBedroom() <= forrentResDTO.getBedroom() && filterForrent.getBathroom() <= forrentResDTO.getBathroom()) {
+                Boolean checkday = true;
+                for (BookingDetail bookingDetail : iBookingDetailRepository.findAllByForrent(forrentRepository.findById(forrentResDTO.getId()).get())) {
+                    if (!
+                            ((filterForrent.getCheckout().isBefore(bookingDetail.getOrderday()) || filterForrent.getCheckout().equals(bookingDetail.getOrderday())) ||
+                                    (filterForrent.getCheckin().isAfter(bookingDetail.getPayday()) || filterForrent.getCheckin().equals(bookingDetail.getPayday())))
+                    ) {
+                        checkday = false;
+                        break;
+                    }
+                }
+                if (checkday) {
+                    listForrentCheck.add(forrentResDTO);
+                }
+            }
+        }
+        return listForrentCheck;
+    }
 }

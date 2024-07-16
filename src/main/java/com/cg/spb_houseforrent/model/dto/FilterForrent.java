@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FilterForrent {
-    private String kw;
+    private String address;
     private Long bedroom;
     private Long bathroom;
     @JsonFormat(pattern = "yyyy-MM-dd")

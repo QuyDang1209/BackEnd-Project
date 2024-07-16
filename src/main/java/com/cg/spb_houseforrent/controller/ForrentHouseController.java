@@ -1,8 +1,8 @@
 package com.cg.spb_houseforrent.controller;
 
-import com.cg.spb_houseforrent.model.dto.FilterForrent;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.Forrent;
+import com.cg.spb_houseforrent.model.dto.FilterForrent;
 import com.cg.spb_houseforrent.model.User;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.dto.UserDTO;
@@ -15,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
@@ -40,10 +42,10 @@ public class ForrentHouseController {
         return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);
     }
     // :8080/api/forrent-house/filter?kw=&person=2&bedroom=2&bathroom=2&checkin=2022-11-11&checkout=2022-11-12&page=1&size=10
-    @GetMapping("/filter")
-    public ResponseEntity<?> filter(@PageableDefault(page = 0, size = 10 ) Pageable pageable, FilterForrent filterForrent) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
+//    @GetMapping("/filter")
+//    public ResponseEntity<?> filter(@PageableDefault(page = 0, size = 10 ) Pageable pageable, FilterForrent filterForrent) {
+//        return new ResponseEntity<>(null, HttpStatus.OK);
+//    }
 
 
     @GetMapping("/{id}")
@@ -64,13 +66,21 @@ public class ForrentHouseController {
         forrentService.saveForrentDto(forrentDTO);
         return new ResponseEntity<>(forrentOptional.get(),HttpStatus.OK);
     }
+
     @GetMapping("/detail/{id}")
-    public ResponseEntity<?> findForrentHouseDTOById(@PathVariable Long id){
+    public ResponseEntity<?> findForrentHouseDTOById(@PathVariable Long id) {
         Optional<ForrentResDTO> forrentResDTOOptional = forrentService.findForrentHouseDTOById(id);
         if (!forrentResDTOOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(forrentResDTOOptional.get(), HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/filter")
+    private ResponseEntity<?> checkDayOrderPay(@RequestBody FilterForrent filterForrent){
+        Set<ForrentResDTO> forrentDTOs = forrentService.findAllForrentDTO(filterForrent);
+        return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);
+
     }
 }
