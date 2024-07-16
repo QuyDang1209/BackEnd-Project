@@ -27,3 +27,8 @@ public class BookingDTO {
     private Long payment;
     private Long status;
 }
+//    private Double rent;
+    private Double deposite;
+    private Long payment;
+    private Long status;
+}

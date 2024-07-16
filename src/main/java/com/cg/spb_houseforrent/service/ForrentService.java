@@ -132,3 +132,5 @@ public class ForrentService implements IForrentService {
         return forrentRepository.findTypeById(typeId);
     }
 }
+}
+

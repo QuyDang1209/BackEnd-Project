@@ -72,6 +72,7 @@ public class ForrentHouseController {
         return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);
     }
 
+
     @GetMapping("/filter-house-by-type")
     public Iterable<Forrent> getHouseByType(@RequestParam("typeId") Long typeId) {
         return forrentService.getForrentByTypeId(typeId);
