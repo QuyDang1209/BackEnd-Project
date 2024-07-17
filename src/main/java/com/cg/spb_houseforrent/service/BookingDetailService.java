@@ -4,6 +4,7 @@ import com.cg.spb_houseforrent.exception.DateForrentException;
 import com.cg.spb_houseforrent.model.BookingDetail;
 import com.cg.spb_houseforrent.model.StatusHouse;
 import com.cg.spb_houseforrent.model.dto.BookingDTO;
+import com.cg.spb_houseforrent.model.dto.res.BookingResDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class BookingDetailService implements IBookingDetailService {
     private IPaymentRepository paymentRepository;
     @Autowired
     private IStatusHouseRepository statusHouseRepository;
+    @Autowired
+    private IBookingRepository bookingRepository;
 
     @Override
     public Iterable<BookingDetail> findAll() {
@@ -112,7 +115,45 @@ public class BookingDetailService implements IBookingDetailService {
     }
 
     @Override
+    public List<BookingResDTO> findAllBookingsByUserId(Long userId) {
+            return bookingRepository.findAllBookingByUserId(userId);
+    }
+
+    @Override
+    public void checkin(Long bookingId, Long statusHouseId) throws Exception {
+        Optional<BookingDetail> optionalBooking = bookingRepository.findById(bookingId);
+        if (optionalBooking.isPresent()) {
+            BookingDetail bookingDetail = optionalBooking.get();
+            if (statusHouseId == 2) { // Check-in
+                bookingDetail.setStatus(new StatusHouse(2L)); // Assuming 2 is the status for check-in
+                bookingRepository.save(bookingDetail);
+            } else {
+                throw new Exception("Invalid statusHouseId for check-in");
+            }
+        } else {
+            throw new Exception("Booking not found");
+        }
+    }
+
+    @Override
+    public void checkout(Long bookingId, Long statusHouseId) throws Exception {
+        Optional<BookingDetail> optionalBooking = bookingRepository.findById(bookingId);
+        if (optionalBooking.isPresent()) {
+            BookingDetail bookingDetail = optionalBooking.get();
+            if (statusHouseId == 3) { // Check-out
+                bookingDetail.setStatus(new StatusHouse(3L)); // Assuming 3 is the status for check-out
+                bookingRepository.save(bookingDetail);
+            } else {
+                throw new Exception("Invalid statusHouseId for check-out");
+            }
+        } else {
+            throw new Exception("Booking not found");
+        }
+    }
+
+    @Override
     public void remove(Long id) {
         bookingDetailRepository.deleteById(id);
     }
+
 }

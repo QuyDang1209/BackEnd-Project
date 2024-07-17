@@ -20,13 +20,16 @@ public interface IForrentRepository extends JpaRepository<Forrent, Long> {
     List<ForrentResDTO> findAllForrentDTO();
     @Query("SELECT f FROM Forrent f JOIN f.type t WHERE t.id = :typeId")
     Iterable<Forrent> findTypeById(@Param("typeId") Long typeId);
-    @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) FROM Forrent f WHERE f.id = :id")
-    Optional<ForrentResDTO> findForrentResDTOById(Long id);
-    @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) FROM Forrent f WHERE f.users.id = :userId")
-    List<ForrentResDTO> findForrentResDTOsByUserId(Long userId);
     @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) " +
             "FROM Forrent f " +
-            "WHERE (:houseName IS NULL OR f.namehouse LIKE %:houseName%) " +
+            "WHERE (:namehouse IS NULL OR f.namehouse LIKE %:namehouse%) " +
+            "AND (:orderStatus IS NULL OR f.orderStatus = :orderStatus)")
+    Page<ForrentResDTO> searchHouses(@Param("namehouse") String namehouse,
+                                     @Param("orderStatus") String orderStatus,
+                                     Pageable pageable);
+    @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) " +
+            "FROM Forrent f " +
+            "WHERE (:namehouse IS NULL OR f.namehouse LIKE %:namehouse%) " +
             "AND (:startDate IS NULL OR f.startDate >= :startDate) " +
             "AND (:endDate IS NULL OR f.endDate <= :endDate) " +
             "AND (:orderStatus IS NULL OR f.orderStatus = :orderStatus)")
@@ -36,11 +39,7 @@ public interface IForrentRepository extends JpaRepository<Forrent, Long> {
                                        @Param("orderStatus") String orderStatus,
                                        Pageable pageable);
 
-    @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) " +
-            "FROM Forrent f " +
-            "WHERE (:namehouse IS NULL OR f.namehouse LIKE %:namehouse%) " +
-            "AND (:orderStatus IS NULL OR f.orderStatus = :orderStatus)")
-    Page<ForrentResDTO> searchHouses(@Param("namehouse") String namehouse,
-                                     @Param("orderStatus") String orderStatus,
-                                     Pageable pageable);
+    Optional<ForrentResDTO> findForrentResDTOById(Long id);
+
+    List<ForrentResDTO> findForrentResDTOsByUserId(Long userId);
 }
