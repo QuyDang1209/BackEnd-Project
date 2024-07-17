@@ -15,4 +15,3 @@ public interface IBookingDetailService extends IGenericService<BookingDetail>{
     void checkout(Long bookingId, Long statusHouseId) throws Exception;
 
 }
-

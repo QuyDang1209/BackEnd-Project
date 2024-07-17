@@ -3,15 +3,11 @@ package com.cg.spb_houseforrent.service;
 import com.cg.spb_houseforrent.model.BookingDetail;
 import com.cg.spb_houseforrent.model.Forrent;
 import com.cg.spb_houseforrent.model.ImgHouse;
-import com.cg.spb_houseforrent.model.dto.BookingSearchCriterDTO;
 import com.cg.spb_houseforrent.model.dto.FilterForrent;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
-import com.cg.spb_houseforrent.model.dto.HouseSearchCriteriaDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -67,7 +63,7 @@ public class ForrentService implements IForrentService {
                 if (i.getId() == null) {
                     i.setForrents(forrent);
                     imgHouseService.save(i);
-                    break;
+//                    break;
                 }
             }
             forrentRepository.save(forrent);
@@ -104,6 +100,12 @@ public class ForrentService implements IForrentService {
     public void remove(Long id) {
 
     }
+    @Override
+    public Optional<ForrentResDTO> findForrentHouseDTOById(Long id) {
+        return forrentRepository.findForrentHouseDTOById(id);
+    }
+
+
 
     @Override
     public Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent) {
@@ -135,22 +137,7 @@ public class ForrentService implements IForrentService {
         return forrentRepository.findTypeById(typeId);
     }
 
-    @Override
-    public Page<ForrentResDTO> searchBookings(BookingSearchCriterDTO criterDTO, Pageable pageable) {
-        return forrentRepository.searchBookings(criterDTO.getNamehouse(), criterDTO.getStartDate(),
-                criterDTO.getEndDate(), criterDTO.getOrderStatus(), pageable);
-    }
-
-    @Override
-    public Page<ForrentResDTO> searchHouses(HouseSearchCriteriaDTO criteria, Pageable pageable) {
-        return forrentRepository.searchHouses(criteria.getNamehouse(),criteria.getOrderStatus(),pageable);
-    }
-
-    public Optional<ForrentResDTO> findForrentResDTOById(Long id) {
-        return forrentRepository.findForrentResDTOById(id);
-    }
-
-    public List<ForrentResDTO> findForrentResDTOByUserId(Long userId) {
-        return forrentRepository.findForrentResDTOsByUserId(userId);
+    public Iterable<ForrentResDTO> findForrentResDTOByUserId(Long userId) {
+        return forrentRepository.findForrentResDTOsByUsers_Id(userId);
     }
 }
