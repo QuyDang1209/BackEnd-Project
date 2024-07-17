@@ -71,4 +71,8 @@ public class ForrentHouseController {
         Set<ForrentResDTO> forrentDTOs = forrentService.findAllForrentDTO(filterForrent);
         return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);
     }
+    @GetMapping("/filter-home")
+    private ResponseEntity<?> homepageFilter(@PageableDefault(size = 10, page = 0) Pageable pageable, LocalDate checkIn, LocalDate checkOut){
+        return new ResponseEntity<>(forrentService.filterHomePage(pageable,checkIn,checkOut),HttpStatus.OK);
+    }
 }

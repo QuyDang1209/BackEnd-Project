@@ -8,6 +8,9 @@ import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -125,5 +128,10 @@ public class ForrentService implements IForrentService {
             }
         }
         return listForrentCheck;
+    }
+
+    @Override
+    public Page<ForrentResDTO> filterHomePage(Pageable pageable, LocalDate checkIn, LocalDate checkOut ) {
+        return forrentRepository.filterHomePage(pageable, checkIn, checkOut);
     }
 }
