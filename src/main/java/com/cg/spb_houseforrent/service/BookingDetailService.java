@@ -120,6 +120,38 @@ public class BookingDetailService implements IBookingDetailService {
     }
 
     @Override
+    public void checkin(Long bookingId, Long statusHouseId) throws Exception {
+        Optional<BookingDetail> optionalBooking = bookingRepository.findById(bookingId);
+        if (optionalBooking.isPresent()) {
+            BookingDetail bookingDetail = optionalBooking.get();
+            if (statusHouseId == 2) { // Check-in
+                bookingDetail.setStatus(new StatusHouse(2L)); // Assuming 2 is the status for check-in
+                bookingRepository.save(bookingDetail);
+            } else {
+                throw new Exception("Invalid statusHouseId for check-in");
+            }
+        } else {
+            throw new Exception("Booking not found");
+        }
+    }
+
+    @Override
+    public void checkout(Long bookingId, Long statusHouseId) throws Exception {
+        Optional<BookingDetail> optionalBooking = bookingRepository.findById(bookingId);
+        if (optionalBooking.isPresent()) {
+            BookingDetail bookingDetail = optionalBooking.get();
+            if (statusHouseId == 3) { // Check-out
+                bookingDetail.setStatus(new StatusHouse(3L)); // Assuming 3 is the status for check-out
+                bookingRepository.save(bookingDetail);
+            } else {
+                throw new Exception("Invalid statusHouseId for check-out");
+            }
+        } else {
+            throw new Exception("Booking not found");
+        }
+    }
+
+    @Override
     public void remove(Long id) {
         bookingDetailRepository.deleteById(id);
     }

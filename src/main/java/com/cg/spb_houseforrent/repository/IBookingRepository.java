@@ -20,4 +20,7 @@ public interface IBookingRepository extends JpaRepository<BookingDetail, Long> {
             "FROM Forrent f JOIN BookingDetail b on f.id = b.forrent.id \n" +
             "WHERE f.users.id = :id")
     List<BookingResDTO> findAllBookingByUserId(@Param("id") Long id);
+
+
+
 }

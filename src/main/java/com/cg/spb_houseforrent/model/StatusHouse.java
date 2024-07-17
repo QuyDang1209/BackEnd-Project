@@ -17,4 +17,8 @@ public class StatusHouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String status;
+    public StatusHouse(Long id) {
+        this.id = id;
+    }
+
 }

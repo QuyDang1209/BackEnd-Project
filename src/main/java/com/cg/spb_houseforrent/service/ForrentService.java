@@ -64,7 +64,7 @@ public class ForrentService implements IForrentService {
                 if (i.getId() == null) {
                     i.setForrents(forrent);
                     imgHouseService.save(i);
-                    break;
+//                    break;
                 }
             }
             forrentRepository.save(forrent);
@@ -132,4 +132,11 @@ public class ForrentService implements IForrentService {
         }
         return listForrentCheck;
     }
+
+    @Override
+    public Iterable<Forrent> getForrentByTypeId(Long typeId) {
+        return forrentRepository.findTypeById(typeId);
+    }
 }
+
+
