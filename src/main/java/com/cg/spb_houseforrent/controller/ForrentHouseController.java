@@ -1,8 +1,8 @@
 package com.cg.spb_houseforrent.controller;
 
-import com.cg.spb_houseforrent.model.dto.FilterForrent;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.Forrent;
+import com.cg.spb_houseforrent.model.dto.FilterForrent;
 import com.cg.spb_houseforrent.model.User;
 import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.dto.UserDTO;
@@ -66,10 +66,22 @@ public class ForrentHouseController {
         forrentService.saveForrentDto(forrentDTO);
         return new ResponseEntity<>(forrentOptional.get(),HttpStatus.OK);
     }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> findForrentHouseDTOById(@PathVariable Long id) {
+        Optional<ForrentResDTO> forrentResDTOOptional = forrentService.findForrentHouseDTOById(id);
+        if (!forrentResDTOOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(forrentResDTOOptional.get(), HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/filter")
     private ResponseEntity<?> checkDayOrderPay(@RequestBody FilterForrent filterForrent){
         Set<ForrentResDTO> forrentDTOs = forrentService.findAllForrentDTO(filterForrent);
         return new ResponseEntity<>(forrentDTOs, HttpStatus.OK);
+
     }
 
 

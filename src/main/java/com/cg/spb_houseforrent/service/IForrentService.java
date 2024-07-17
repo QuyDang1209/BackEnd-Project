@@ -7,13 +7,21 @@ import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import java.util.Optional;
+
 import java.util.Set;
 
 public interface IForrentService extends IGenericService<Forrent> {
     Forrent saveForrentDto(ForrentDTO forrentDTO);
 
     List<ForrentResDTO> findAllForrentDTO();
+
+    Optional<ForrentResDTO> findForrentHouseDTOById(Long id);
+
     Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent);
 
+
     Iterable<Forrent> getForrentByTypeId(Long typeId);
+
 }

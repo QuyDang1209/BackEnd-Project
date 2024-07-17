@@ -64,7 +64,7 @@ public class ForrentService implements IForrentService {
                 if (i.getId() == null) {
                     i.setForrents(forrent);
                     imgHouseService.save(i);
-                    break;
+//                    break;
                 }
             }
             forrentRepository.save(forrent);
@@ -101,6 +101,12 @@ public class ForrentService implements IForrentService {
     public void remove(Long id) {
 
     }
+    @Override
+    public Optional<ForrentResDTO> findForrentHouseDTOById(Long id) {
+        return forrentRepository.findForrentHouseDTOById(id);
+    }
+
+
 
     @Override
     public Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent) {
@@ -132,5 +138,5 @@ public class ForrentService implements IForrentService {
         return forrentRepository.findTypeById(typeId);
     }
 }
-}
+
 
