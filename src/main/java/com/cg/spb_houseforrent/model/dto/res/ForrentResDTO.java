@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,9 @@ public class ForrentResDTO {
     private Long bedroom;
     private Long bathroom;
     private Long users;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String orderStatus;
 
     public ForrentResDTO(Forrent forrent) {
         this.id = forrent.getId();
@@ -39,6 +43,9 @@ public class ForrentResDTO {
         this.namehouse = forrent.getNamehouse();
         this.bedroom = forrent.getBedroom();
         this.bathroom = forrent.getBathroom();
+        this.startDate = forrent.getStartDate();
+        this.endDate = forrent.getEndDate();
+        this.orderStatus = forrent.getOrderStatus();
     }
     public ForrentResDTO(BookingDetail bookingDetail) {
 

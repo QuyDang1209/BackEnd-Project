@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,9 @@ public class Forrent {
     private Long bedroom;
     private Long bathroom;
     private Double rentingprice;
-
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String orderStatus;
     private String decription;
     @ManyToOne
     @JoinColumn(name = "typehouses_id")
