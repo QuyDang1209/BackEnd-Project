@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,11 +31,16 @@ public class Forrent {
     private LocalDate endDate;
     private String orderStatus;
     private String decription;
+    private Integer rentCount;
     @ManyToOne
     @JoinColumn(name = "typehouses_id")
     private TypeHouse type;
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User users;
+    @OneToMany(mappedBy = "forrents")
+    private List<Rental> rentals;
 
+    @OneToMany(mappedBy = "forrents")
+    private List<Comment> comments;
 }

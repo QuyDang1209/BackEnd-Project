@@ -41,4 +41,6 @@ public interface IForrentRepository extends JpaRepository<Forrent, Long> {
 
     @Query("SELECT f FROM Forrent f WHERE f.users.id = :userId")
     Page<ForrentResDTO> findByUserId(Long userId, Pageable pageable);
+
+    List<ForrentResDTO> findTop5ByOrderByRentCountDesc();
 }

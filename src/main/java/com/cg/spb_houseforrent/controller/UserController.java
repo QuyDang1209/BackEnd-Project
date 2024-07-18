@@ -2,9 +2,11 @@ package com.cg.spb_houseforrent.controller;
 
 import com.cg.spb_houseforrent.model.User;
 import com.cg.spb_houseforrent.model.dto.UserDTO;
+import com.cg.spb_houseforrent.model.dto.res.RentalHistoryDTORes;
 import com.cg.spb_houseforrent.model.dto.res.UserActiveRes;
 import com.cg.spb_houseforrent.repository.IUsersRepository;
 import com.cg.spb_houseforrent.service.IUserService;
+import com.cg.spb_houseforrent.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private IUserService userService;
+    @Autowired
+    private RentalService rentalService;
     @GetMapping("")
     public ResponseEntity<Iterable<User>> findAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
@@ -97,5 +101,14 @@ public class UserController {
     @GetMapping("/filter")
     public Iterable<User> getUsersByRole(@RequestParam("roleId") Long roleId) {
         return userService.getUsersByRoleId(roleId);
+    }
+    @GetMapping("/rental-history")
+    public List<RentalHistoryDTORes> getUserRentalHistory(@RequestParam User users) {
+        return rentalService.getUserRentalHistory(users);
+    }
+
+    @PostMapping("/cancel-rental")
+    public void cancelRental(@RequestBody Long rentalId) {
+        rentalService.cancelRental(rentalId);
     }
 }

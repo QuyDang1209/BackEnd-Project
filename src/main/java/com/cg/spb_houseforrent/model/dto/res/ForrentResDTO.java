@@ -31,6 +31,7 @@ public class ForrentResDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private String orderStatus;
+    private Integer rentCount;
 
     public ForrentResDTO(Forrent forrent) {
         this.id = forrent.getId();
@@ -46,6 +47,7 @@ public class ForrentResDTO {
         this.startDate = forrent.getStartDate();
         this.endDate = forrent.getEndDate();
         this.orderStatus = forrent.getOrderStatus();
+        this.rentCount = forrent.getRentCount();
     }
     public ForrentResDTO(BookingDetail bookingDetail) {
 

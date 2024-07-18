@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -167,6 +168,24 @@ public class ForrentService implements IForrentService {
 
     public Iterable<ForrentResDTO> findForrentResDTOByUserId(Long userId) {
         return forrentRepository.findForrentResDTOsByUsers_Id(userId);
+    }
+
+    public Map<String, Object> calculateIncomeStatistics(LocalDate startDate, LocalDate endDate) {
+        Map<String, Object> statistics = new HashMap<>();
+        BigDecimal totalIncome = calculateTotalIncome(startDate, endDate);
+        statistics.put("startDate", startDate);
+        statistics.put("endDate", endDate);
+        statistics.put("totalIncome", totalIncome);
+        return statistics;
+    }
+
+    private BigDecimal calculateTotalIncome(LocalDate startDate, LocalDate endDate) {
+        BigDecimal totalIncome = BigDecimal.valueOf(5000.00); // Example total income
+        return totalIncome;
+    }
+
+    public List<ForrentResDTO> findTop5MostRented(){
+        return forrentRepository.findTop5ByOrderByRentCountDesc();
     }
 
     private ForrentResDTO convertToDto(Forrent forrent) {

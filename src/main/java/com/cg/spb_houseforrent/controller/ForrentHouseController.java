@@ -93,7 +93,7 @@ public class ForrentHouseController {
     public ResponseEntity<?> getHouseByUserId(
             @PathVariable Long userId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ForrentResDTO> forrentResDTOS = forrentService.findForrentResDTOByUserId(userId, pageable);
         return new ResponseEntity<>(forrentResDTOS, HttpStatus.OK);
@@ -132,5 +132,19 @@ public class ForrentHouseController {
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
         Page<ForrentResDTO> schedules = forrentService.searchSchedules(namehouse, startDate, endDate, orderStatus, pageable);
         return new ResponseEntity<>(schedules, HttpStatus.OK);
+    }
+
+    @GetMapping("/income-statistics")
+    public ResponseEntity<?> getIncomeStatistics(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        Map<String , Object> statistics = forrentService.calculateIncomeStatistics(startDate, endDate);
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
+    }
+
+    @GetMapping("/top-rented")
+    public ResponseEntity<?> getTop5MostRented() {
+        List<ForrentResDTO> top5MostRented = forrentService.findTop5MostRented();
+        return new ResponseEntity<>(top5MostRented, HttpStatus.OK);
     }
 }
