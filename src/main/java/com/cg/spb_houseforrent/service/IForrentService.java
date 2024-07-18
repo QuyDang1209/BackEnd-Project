@@ -19,13 +19,17 @@ public interface IForrentService extends IGenericService<Forrent> {
 
     List<ForrentResDTO> findAllForrentDTO();
 
+    Page<ForrentResDTO> findAllForrentDTO(int page, int pageSize);
+
+    Page<ForrentResDTO> findForrentResDTOByUserId(Long userId, Pageable pageable);
+
     Optional<ForrentResDTO> findForrentHouseDTOById(Long id);
 
     Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent);
 
     Iterable<Forrent> getForrentByTypeId(Long typeId);
 
-//    Page<ForrentResDTO> searchBookings(BookingSearchCriterDTO criterDTO, Pageable pageable);
-//
-//    Page<ForrentResDTO> searchHouses(HouseSearchCriteriaDTO criteria, Pageable pageable);
+    Page<ForrentResDTO> searchHousesByNamehouseAndOrderStatus(String namehouse, String orderStatus, Pageable pageable);
+
+    Page<ForrentResDTO> searchSchedules(String namehouse, LocalDate startDate, LocalDate endDate, String orderStatus, Pageable pageable);
 }
