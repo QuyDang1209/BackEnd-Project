@@ -8,8 +8,12 @@ import com.cg.spb_houseforrent.model.dto.ForrentDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -98,6 +102,18 @@ public class ForrentService implements IForrentService {
     }
 
     @Override
+    public Page<ForrentResDTO> findAllForrentDTO(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Forrent> forrentPage = forrentRepository.findAll(pageable);
+        return forrentPage.map(this::convertToDto);
+    }
+
+    @Override
+    public Page<ForrentResDTO> findForrentResDTOByUserId(Long userId, Pageable pageable) {
+        return forrentRepository.findByUserId(userId, pageable);
+    }
+
+    @Override
     public void remove(Long id) {
 
     }
@@ -137,6 +153,56 @@ public class ForrentService implements IForrentService {
     public Iterable<Forrent> getForrentByTypeId(Long typeId) {
         return forrentRepository.findTypeById(typeId);
     }
+
+    @Override
+    public Page<ForrentResDTO> searchHousesByNamehouseAndOrderStatus(String namehouse, String orderStatus, Pageable pageable) {
+        return forrentRepository.findByNamehouseContainingAndOrderStatus(namehouse, orderStatus, pageable)
+                .map(this::convertToDto);
+    }
+
+    @Override
+    public Page<ForrentResDTO> searchSchedules(String namehouse, LocalDate startDate, LocalDate endDate, String orderStatus, Pageable pageable) {
+        return forrentRepository.findSchedules(namehouse, startDate, endDate, orderStatus, pageable)
+                .map(this::convertToDto);
+    }
+
+    public Iterable<ForrentResDTO> findForrentResDTOByUserId(Long userId) {
+        return forrentRepository.findForrentResDTOsByUsers_Id(userId);
+    }
+
+    public Map<String, Object> calculateIncomeStatistics(LocalDate startDate, LocalDate endDate) {
+        Map<String, Object> statistics = new HashMap<>();
+        BigDecimal totalIncome = calculateTotalIncome(startDate, endDate);
+        statistics.put("startDate", startDate);
+        statistics.put("endDate", endDate);
+        statistics.put("totalIncome", totalIncome);
+        return statistics;
+    }
+
+    private BigDecimal calculateTotalIncome(LocalDate startDate, LocalDate endDate) {
+        BigDecimal totalIncome = BigDecimal.valueOf(5000.00); // Example total income
+        return totalIncome;
+    }
+
+    public List<ForrentResDTO> findTop5MostRented(){
+        return forrentRepository.findTop5ByOrderByRentCountDesc();
+    }
+
+    private ForrentResDTO convertToDto(Forrent forrent) {
+        // Conversion logic here...
+        ForrentResDTO forrentResDTO = new ForrentResDTO();
+        forrentResDTO.setId(forrent.getId());
+        forrentResDTO.setNamehouse(forrent.getNamehouse());
+        forrentResDTO.setImgDTOs(forrent.getImg().stream().map(imgHouse -> imgHouse.imgHouseDTO()).toList());
+        forrentResDTO.setAddress(forrent.getAddress());
+        forrentResDTO.setRentingprice(forrent.getRentingprice());
+        forrentResDTO.setBedroom(forrent.getBedroom());
+        forrentResDTO.setBathroom(forrent.getBathroom());
+        forrentResDTO.setType(forrent.getType().getId());
+        forrentResDTO.setUsers(forrent.getUsers().getId());
+        forrentResDTO.setStartDate(forrent.getStartDate());
+        forrentResDTO.setEndDate(forrent.getEndDate());
+        forrentResDTO.setOrderStatus(forrent.getOrderStatus());
+        return forrentResDTO;
+    }
 }
-
-

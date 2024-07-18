@@ -116,7 +116,7 @@ public class BookingDetailService implements IBookingDetailService {
 
     @Override
     public List<BookingResDTO> findAllBookingsByUserId(Long userId) {
-            return bookingRepository.findAllBookingByUserId(userId);
+        return bookingRepository.findAllBookingByUserId(userId);
     }
 
     @Override
