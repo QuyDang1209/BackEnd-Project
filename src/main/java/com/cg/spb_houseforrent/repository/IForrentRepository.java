@@ -28,4 +28,6 @@ public interface IForrentRepository extends JpaRepository<Forrent, Long> {
             "and (:checkIn < b.payday and :checkOut > b.orderday) \n" +
             ")")
     Page<ForrentResDTO> filterHomePage(Pageable pageable, @Param("checkIn")LocalDate checkIn, @Param("checkOut")LocalDate checkOut);
+    @Query("SELECT f FROM Forrent f JOIN f.type t WHERE t.id = :typeId")
+    Iterable<Forrent> findTypeById(@Param("typeId") Long typeId);
 }

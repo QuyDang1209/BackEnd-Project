@@ -10,3 +10,4 @@ public interface IBookingDetailService extends IGenericService<BookingDetail>{
     void changeStatus(List<BookingDTO> bookingDTOList);
     List<BookingDetail> findAllBookingByForrentId(Long id);
 }
+
