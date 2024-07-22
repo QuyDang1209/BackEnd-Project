@@ -205,4 +205,15 @@ public class ForrentService implements IForrentService {
         forrentResDTO.setOrderStatus(forrent.getOrderStatus());
         return forrentResDTO;
     }
+
+    // Assuming you have a constructor or method to convert Forrent to ForrentResDTO
+    public ForrentResDTO updateForrentHouseStatus(Long houseId , String orderStatus){
+        Forrent forrent = forrentRepository.findById(houseId).orElseThrow(() -> new IllegalArgumentException("House not found"));
+        if ("Rented".equals(forrent.getOrderStatus())){
+            throw new IllegalStateException(" Can't change status of a rented house");
+        }
+        forrent.setOrderStatus(orderStatus);
+        Forrent updatedForrent = forrentRepository.save(forrent);
+        return new ForrentResDTO(updatedForrent);
+    }
 }

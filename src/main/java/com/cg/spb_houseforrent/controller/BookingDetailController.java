@@ -1,5 +1,6 @@
 package com.cg.spb_houseforrent.controller;
 
+import com.cg.spb_houseforrent.model.BookingDetail;
 import com.cg.spb_houseforrent.model.dto.BookingDTO;
 import com.cg.spb_houseforrent.model.dto.res.BookingResDTO;
 import com.cg.spb_houseforrent.service.IBookingDetailService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,17 @@ public class BookingDetailController {
     @GetMapping
     private ResponseEntity<?> getAllBooking() {
         return new ResponseEntity<>(bookingDetailService.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public BookingDetail createBookingDetail(
+            @RequestParam Long forrentId,
+            @RequestParam Long userId,
+            @RequestParam("orderpay") String orderpay,
+            @RequestParam("payday") String payday) {
+        LocalDate start = LocalDate.parse(orderpay);
+        LocalDate end = LocalDate.parse(payday);
+        return bookingDetailService.createBookingDetail(forrentId, userId, start, end);
     }
 
     @PostMapping

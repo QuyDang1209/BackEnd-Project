@@ -27,4 +27,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "forrents_id")
     private Forrent forrents;
+
+    public Comment(Long comment_id) {
+        this.id = comment_id;
+    }
 }

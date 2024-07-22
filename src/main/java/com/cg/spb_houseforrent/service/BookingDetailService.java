@@ -1,19 +1,21 @@
 package com.cg.spb_houseforrent.service;
 
+import com.cg.spb_houseforrent.config.service.UserService;
 import com.cg.spb_houseforrent.exception.DateForrentException;
 import com.cg.spb_houseforrent.model.BookingDetail;
+import com.cg.spb_houseforrent.model.Forrent;
 import com.cg.spb_houseforrent.model.StatusHouse;
+import com.cg.spb_houseforrent.model.User;
 import com.cg.spb_houseforrent.model.dto.BookingDTO;
 import com.cg.spb_houseforrent.model.dto.res.BookingResDTO;
-import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
 
 @Service
 public class BookingDetailService implements IBookingDetailService {
@@ -29,6 +31,10 @@ public class BookingDetailService implements IBookingDetailService {
     private IStatusHouseRepository statusHouseRepository;
     @Autowired
     private IBookingRepository bookingRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Iterable<BookingDetail> findAll() {
@@ -48,6 +54,84 @@ public class BookingDetailService implements IBookingDetailService {
     @Override
     public BookingDetail save(BookingDetail bookingDetail) {
         return bookingDetailRepository.save(bookingDetail);
+    }
+
+    /*
+    @Override
+    public BookingDetail createBookingDetail(Long forrentId, Long userId, LocalDate orderpay, LocalDate payday) {
+        Forrent forrent = forrentRepository.findById(forrentId).orElseThrow(() -> new IllegalArgumentException("House not found"));
+        if ("Rented".equals(forrent.getOrderStatus())) {
+            throw new IllegalStateException("Cannot book a rented house");
+        }
+        long days = ChronoUnit.DAYS.between(orderpay, payday);
+        if (days <= 0) {
+            throw new IllegalArgumentException("Invalid rental period");
+        }
+
+        double totalPrice = days * forrent.getRentingprice();
+
+        BookingDetail bookingDetail = new BookingDetail();
+        bookingDetail.setForrent(forrent);
+        bookingDetail.setUsers(new User(userId));
+        bookingDetail.setTotalPrice(totalPrice);
+        bookingDetail.setStatus(new StatusHouse(1L)); // Assuming 1 is the initial booking status
+        return bookingDetailRepository.save(bookingDetail);
+    }
+
+     */
+
+    @Override
+    public BookingDetail createBookingDetail(Long forrentId, Long userId, LocalDate orderpay, LocalDate payday) {
+        Forrent forrent = forrentRepository.findById(forrentId).orElseThrow(() -> new IllegalArgumentException("House not found"));
+        if ("Rented".equals(forrent.getOrderStatus())) {
+            throw new IllegalStateException("Cannot book a rented house");
+        }
+        long days = ChronoUnit.DAYS.between(orderpay, payday);
+        if (days <= 0) {
+            throw new IllegalArgumentException("Invalid rental period");
+        }
+        double totalPrice = days * forrent.getRentingprice();
+        BookingDetail bookingDetail = new BookingDetail();
+        bookingDetail.setForrent(forrent);
+        bookingDetail.setUsers(new User(userId));
+        bookingDetail.setTotalPrice(totalPrice);
+        bookingDetail.setStatus(new StatusHouse(1L)); // Assuming 1 is the initial booking status
+        BookingDetail savedBooking = bookingRepository.save(bookingDetail);
+        // Send email notification
+        String subject = "Booking Confirmation";
+        String message = "Dear user, your booking for house " + forrent.getNamehouse() +
+                " from " + orderpay + " to " + payday +
+                " has been confirmed. Total price: " + totalPrice;
+        emailService.sendEmail("user-email@example.com", subject, message);
+        return savedBooking;
+    }
+
+    private void updateBookingDetailFromDTO(BookingDetail bookingDetail, BookingDTO bookingDTO) {
+        Forrent forrent = forrentRepository.findById(bookingDTO.getForrent())
+                .orElseThrow(() -> new IllegalArgumentException("House not found"));
+        User user = usersRepository.findById(bookingDTO.getUsers())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        double rent = ChronoUnit.DAYS.between(bookingDTO.getOrderday(), bookingDTO.getPayday()) * forrent.getRentingprice();
+
+        bookingDetail.setForrent(forrent);
+        bookingDetail.setUsers(user);
+        bookingDetail.setOrderday(bookingDTO.getOrderday());
+        bookingDetail.setPayday(bookingDTO.getPayday());
+        bookingDetail.setRent(rent);
+        bookingDetail.setDeposite(bookingDTO.getDeposite());
+        bookingDetail.setPayment(paymentRepository.findById(bookingDTO.getPayment())
+                .orElseThrow(() -> new IllegalArgumentException("Payment method not found")));
+        bookingDetail.setStatus(statusHouseRepository.findById(bookingDTO.getStatus())
+                .orElseThrow(() -> new IllegalArgumentException("Status not found")));
+    }
+
+    private boolean isBookingPeriodAvailable(BookingDTO bookingDTO) {
+        Forrent forrent = forrentRepository.findById(bookingDTO.getForrent())
+                .orElseThrow(() -> new IllegalArgumentException("House not found"));
+        return bookingDetailRepository.findAllByForrent(forrent).stream().noneMatch(bookingDetail ->
+                !((bookingDTO.getPayday().isBefore(bookingDetail.getOrderday()) || bookingDTO.getPayday().isEqual(bookingDetail.getOrderday())) ||
+                        (bookingDTO.getOrderday().isAfter(bookingDetail.getPayday()) || bookingDTO.getOrderday().isEqual(bookingDetail.getPayday())))
+        );
     }
 
     @Override
@@ -111,7 +195,8 @@ public class BookingDetailService implements IBookingDetailService {
 
     @Override
     public List<BookingDetail> findAllBookingByForrentId(Long id) {
-        return null;
+        return bookingDetailRepository.findAllByForrent(forrentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("House not found")));
     }
 
     @Override
@@ -155,5 +240,4 @@ public class BookingDetailService implements IBookingDetailService {
     public void remove(Long id) {
         bookingDetailRepository.deleteById(id);
     }
-
 }

@@ -43,4 +43,8 @@ public class Forrent {
 
     @OneToMany(mappedBy = "forrents")
     private List<Comment> comments;
+
+    public Forrent(Long forrent_id) {
+        this.id = forrent_id;
+    }
 }

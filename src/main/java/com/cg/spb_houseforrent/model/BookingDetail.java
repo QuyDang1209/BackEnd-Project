@@ -14,8 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "bookings")
-public class
-BookingDetail {
+public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,5 +34,6 @@ BookingDetail {
     @ManyToOne
     @JoinColumn(name="statushouse_id")
     private StatusHouse status;
-
+    @Column(name = "total_price")
+    private double totalPrice;
 }

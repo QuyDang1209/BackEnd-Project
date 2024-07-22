@@ -31,4 +31,7 @@ public class User {
     @JoinColumn(name = "actives_id")
     private ActiveStatus active;
 
+    public User(Long userId) {
+        this.id = userId;
+    }
 }

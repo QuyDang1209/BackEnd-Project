@@ -32,7 +32,6 @@ public class BookingResDTO {
     public BookingResDTO(BookingDetail bookingDetail) {
         this.id = bookingDetail.getId();
         this.typeHouse = new TypeHouseResDTO(bookingDetail.getForrent().getType().getId(), bookingDetail.getForrent().getType().getTypename());
-
         this.forrent = new ForrentResDTO(bookingDetail.getForrent());
         this.orderDay = bookingDetail.getOrderday();
         this.payDay = bookingDetail.getPayday();
