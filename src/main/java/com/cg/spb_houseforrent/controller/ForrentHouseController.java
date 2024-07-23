@@ -147,10 +147,18 @@ public class ForrentHouseController {
         List<ForrentResDTO> top5MostRented = forrentService.findTop5MostRented();
         return new ResponseEntity<>(top5MostRented, HttpStatus.OK);
     }
-
+    /*
     @PatchMapping("/{id}/status")
     public ResponseEntity<ForrentResDTO> updatedForrentHousesStatus(@PathVariable Long id,
                                                               @RequestParam String orderStatus) {
+        ForrentResDTO updateForrentHouse = forrentService.updateForrentHouseStatus(id, orderStatus);
+        return ResponseEntity.ok(updateForrentHouse);
+    }
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ForrentResDTO> updatedForrentHousesStatus(
+            @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "defaultStatus") String orderStatus) {
         ForrentResDTO updateForrentHouse = forrentService.updateForrentHouseStatus(id, orderStatus);
         return ResponseEntity.ok(updateForrentHouse);
     }

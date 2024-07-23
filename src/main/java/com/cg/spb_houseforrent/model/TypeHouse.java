@@ -18,4 +18,7 @@ public class TypeHouse {
     private Long id;
     private String typename;
 
+    public TypeHouse(Long id) {
+        this.id = id;
+    }
 }
