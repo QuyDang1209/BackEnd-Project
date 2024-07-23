@@ -15,7 +15,6 @@ public class LandlordService {
         User user = usersRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Landlord not found"));
         usersRepository.save(user);
-
         String subject = "Landlord Registration Approved";
         String message = "Dear " + user.getName() + ",\n\nYour registration as a landlord has been approved.\n\nReason: " + reason;
         emailService.sendEmail(user.getEmail(), subject, message);
@@ -29,7 +28,6 @@ public class LandlordService {
             throw new IllegalStateException("Landlord is already rejected");
         }
         usersRepository.save(user);
-
         String subject = "Landlord Registration Rejected";
         String message = "Dear " + user.getName() + ",\n\nYour registration as a landlord has been rejected.\n\nReason: " + reason;
         emailService.sendEmail(user.getEmail(), subject, message);
