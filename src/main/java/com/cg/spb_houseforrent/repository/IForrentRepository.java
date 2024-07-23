@@ -29,18 +29,16 @@ public interface IForrentRepository extends JpaRepository<Forrent, Long> {
     @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f)" +
             "FROM Forrent f WHERE f.users.id = :userId")
     Iterable<ForrentResDTO> findForrentResDTOsByUsers_Id(Long userId);
-
     Page<Forrent> findByNamehouseContainingAndOrderStatus(String namehouse, String orderStatus, Pageable pageable);
-
     @Query("SELECT f FROM Forrent f WHERE f.namehouse LIKE %:namehouse% AND f.orderStatus = :orderStatus AND f.startDate >= :startDate AND f.endDate <= :endDate")
     Page<Forrent> findSchedules(@Param("namehouse") String namehouse,
                                 @Param("startDate") LocalDate startDate,
                                 @Param("endDate") LocalDate endDate,
                                 @Param("orderStatus") String orderStatus,
                                 Pageable pageable);
-
     @Query("SELECT f FROM Forrent f WHERE f.users.id = :userId")
     Page<ForrentResDTO> findByUserId(Long userId, Pageable pageable);
-
+    @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) " +
+            "FROM Forrent f ORDER BY f.rentCount DESC")
     List<ForrentResDTO> findTop5ByOrderByRentCountDesc();
 }
