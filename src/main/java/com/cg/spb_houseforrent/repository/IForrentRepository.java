@@ -19,6 +19,16 @@ public interface IForrentRepository extends JpaRepository<Forrent, Long> {
     @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) FROM Forrent f")
     List<ForrentResDTO> findAllForrentDTO();
 
+    @Query("select new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) \n" +
+            "from Forrent f \n" +
+            "where not exists ( \n" +
+            "select b \n" +
+            "from BookingDetail b \n" +
+            "where f.id = b.forrent.id \n" +
+            "and b.status.id = 1 \n" +
+            "and (:checkIn < b.payday and :checkOut > b.orderday) \n" +
+            ")")
+    Page<ForrentResDTO> filterHomePage(Pageable pageable, @Param("checkIn")LocalDate checkIn, @Param("checkOut")LocalDate checkOut);
 
     @Query("SELECT new com.cg.spb_houseforrent.model.dto.res.ForrentResDTO(f) FROM Forrent f WHERE f.id = :id")
     Optional<ForrentResDTO> findForrentHouseDTOById(@Param("id") Long id);

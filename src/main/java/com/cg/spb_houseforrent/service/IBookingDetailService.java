@@ -13,6 +13,7 @@ public interface IBookingDetailService extends IGenericService<BookingDetail>{
     BookingDetail saveBookingDTO(BookingDTO bookingDTO);
     void changeStatus(List<BookingDTO> bookingDTOList);
     List<BookingDetail> findAllBookingByForrentId(Long id);
+
     List<BookingResDTO> findAllBookingsByUserId(Long userId);
     void checkin(Long bookingId, Long statusHouseId) throws Exception;
     void checkout(Long bookingId, Long statusHouseId) throws Exception;
