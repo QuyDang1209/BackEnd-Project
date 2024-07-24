@@ -29,7 +29,9 @@ public class EmailController {
                             "<p>Khách đã cọc: %s</p>\n" +
                             "<p>Số còn lại: %s</p>\n" +
                             "<p>Giờ check in: 14h00</p>\n" +
-                            "<p>Giờ check out: 11h00</p>";
+                            "<p>Giờ check out: 11h00</p> \n" +
+                            "<p>Vui lòng chuyển khoản tiền đặt cọc đến số tài khoản xxxxxxxxxx</p> \n" +
+                            "<p>Chủ tài khoản: admin</p> \n" ;
          String message = htmlContent.formatted(
                  emailDetails.getForrent().getNamehouse(),
                  emailDetails.getForrent().getAddress(),
