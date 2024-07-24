@@ -9,6 +9,8 @@ import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -150,10 +152,13 @@ public class ForrentService implements IForrentService {
     }
 
     @Override
+    public Page<ForrentResDTO> filterHomePage(Pageable pageable, LocalDate checkIn, LocalDate checkOut ) {
+        return forrentRepository.filterHomePage(pageable, checkIn, checkOut);
+    }
+    @Override
     public Iterable<Forrent> getForrentByTypeId(Long typeId) {
         return forrentRepository.findTypeById(typeId);
     }
-
     @Override
     public Page<ForrentResDTO> searchHousesByNamehouseAndOrderStatus(String namehouse, String orderStatus, Pageable pageable) {
         return forrentRepository.findByNamehouseContainingAndOrderStatus(namehouse, orderStatus, pageable)

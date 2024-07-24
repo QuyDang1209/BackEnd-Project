@@ -8,6 +8,7 @@ import com.cg.spb_houseforrent.model.dto.HouseSearchCriteriaDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +27,7 @@ public interface IForrentService extends IGenericService<Forrent> {
     Optional<ForrentResDTO> findForrentHouseDTOById(Long id);
 
     Set<ForrentResDTO> findAllForrentDTO(FilterForrent filterForrent);
+    Page<ForrentResDTO> filterHomePage(Pageable pageable, LocalDate checkIn, LocalDate checkOut);
 
     Iterable<Forrent> getForrentByTypeId(Long typeId);
 

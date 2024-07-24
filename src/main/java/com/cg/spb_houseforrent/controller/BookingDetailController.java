@@ -25,6 +25,7 @@ public class BookingDetailController {
     @PostMapping
     private ResponseEntity<?> save(@RequestBody BookingDTO bookingDTO) {
         bookingDetailService.saveBookingDTO(bookingDTO);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
