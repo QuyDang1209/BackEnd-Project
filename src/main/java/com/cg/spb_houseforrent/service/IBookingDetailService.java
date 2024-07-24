@@ -2,6 +2,7 @@ package com.cg.spb_houseforrent.service;
 
 import com.cg.spb_houseforrent.model.BookingDetail;
 import com.cg.spb_houseforrent.model.dto.BookingDTO;
+import com.cg.spb_houseforrent.model.dto.SumForrent;
 import com.cg.spb_houseforrent.model.dto.res.BookingResDTO;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public interface IBookingDetailService extends IGenericService<BookingDetail>{
     List<BookingResDTO> findAllBookingsByUserId(Long userId);
     void checkin(Long bookingId, Long statusHouseId) throws Exception;
     void checkout(Long bookingId, Long statusHouseId) throws Exception;
+    List<SumForrent> getAllRentalByMonth(Long month, Long userId);
 
 }
