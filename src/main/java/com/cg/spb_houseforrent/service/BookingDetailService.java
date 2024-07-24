@@ -4,12 +4,14 @@ import com.cg.spb_houseforrent.exception.DateForrentException;
 import com.cg.spb_houseforrent.model.BookingDetail;
 import com.cg.spb_houseforrent.model.StatusHouse;
 import com.cg.spb_houseforrent.model.dto.BookingDTO;
+import com.cg.spb_houseforrent.model.dto.SumForrent;
 import com.cg.spb_houseforrent.model.dto.res.BookingResDTO;
 import com.cg.spb_houseforrent.model.dto.res.ForrentResDTO;
 import com.cg.spb_houseforrent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -156,4 +158,16 @@ public class BookingDetailService implements IBookingDetailService {
         bookingDetailRepository.deleteById(id);
     }
 
+    @Override
+    public List<SumForrent> getAllRentalByMonth(Long month, Long userId) {
+//        switch (month){
+//            case 1:
+//                bookingRepository.getSumForrent(LocalDate.of(2024,01,01),LocalDate.of(2024,01,31),userId);
+//                break;
+//            case 2:
+//                bookingRepository.getSumForrent(LocalDate.of(2024,02,01),LocalDate.of(2024,01,29),userId);
+//                break;
+//        }
+        return null;
+    }
 }
