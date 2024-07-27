@@ -14,4 +14,5 @@ public interface IUsersRepository extends JpaRepository<User, Long> {
     User findUserByEmail(String email);
     @Query("SELECT u FROM User u JOIN u.role r WHERE r.id = :roleId")
     List<User> findRoleById(@Param("roleId") Long roleId);
+    User findByUsername(String username);
 }

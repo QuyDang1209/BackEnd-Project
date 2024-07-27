@@ -96,4 +96,13 @@ public class CommentService implements ICommentService {
         List<CommentDTORes> comments = commentRepository.findByForrentsId(forrentId);
         return comments;
     }
+
+    public Comment addComment(Long houseId, User user, CommentDTORes commentDto) {
+        Forrent forrent = forrentRepository.findById(houseId).orElseThrow(() -> new IllegalArgumentException("House not found"));
+        Comment comment = new Comment();
+        comment.setContent(commentDto.getContent());
+        comment.setUsers(user);
+        comment.setForrents(forrent);
+        return commentRepository.save(comment);
+    }
 }

@@ -30,6 +30,7 @@ public class Forrent {
     private LocalDate startDate;
     private LocalDate endDate;
     private String orderStatus;
+    @Column(name="decription" , length = 2505)
     private String decription;
     private Integer rentCount;
     @ManyToOne

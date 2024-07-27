@@ -125,4 +125,7 @@ public class UserMemberService implements IUserService{
         return usersRepository.save(user);
     }
 
+    public User findByUsername(String username) {
+        return usersRepository.findByUsername(username);
+    }
 }
