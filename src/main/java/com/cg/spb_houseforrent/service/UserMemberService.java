@@ -16,7 +16,7 @@ import java.util.*;
 @Service
 public class UserMemberService implements IUserService{
     @Autowired
-    private IUsersRepository usersRepository;
+    private IUsersRepository    usersRepository;
     @Autowired
     private IActiveStatusRepository activeStatusRepository;
     @Autowired
